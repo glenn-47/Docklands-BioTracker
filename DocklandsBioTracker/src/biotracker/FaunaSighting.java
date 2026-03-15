@@ -5,14 +5,19 @@
 package biotracker;
 
 /**
- *
+ * Class: FaunaSighting
  * @author glenn
+ * Description: A subclass of EcoRecord representing animal sightings. 
+ * Overrides displayDetails() to output fauna-specific behaviour and details.
  */
 public class FaunaSighting extends EcoRecord {
     
+    // Using private for encapsulation.
+    // Once an animal type and its behaviour are logged, they should not be altered. (final)
     private final String animalType;
-    private final String behaviourObserved; // Updated spelling!
-
+    private final String behaviourObserved;
+    
+    // Constructor to initialise both the inherited fields and the specific fields
     public FaunaSighting(String recordId, String location, String dateReported, String animalType, String behaviourObserved) {
         super(recordId, location, dateReported);
         this.animalType = animalType;

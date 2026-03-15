@@ -5,8 +5,11 @@
 package biotracker;
 
 /**
- *
+ * Class: MainGUI
  * @author glenn
+ * Description: The visual front end JFrame interface. Captures user input, 
+ * triggers DataManager methods, and displays the state of the ADTs to the
+ * user. Includes input validation and error handling.
  */
 public class MainGUI extends javax.swing.JFrame {
     
@@ -24,7 +27,7 @@ public class MainGUI extends javax.swing.JFrame {
         // Refresh the display to show the pre-loaded data immediately
         refreshDisplay(); 
         
-        // Update the ID counter so it starts AFTER the loaded records!
+        // Update the ID counter so it starts AFTER the loaded records
         // 4 existing records, so the next ID should be 5.
         idCounter = manager.getAllRecords().size() + 1;
         
@@ -37,7 +40,6 @@ public class MainGUI extends javax.swing.JFrame {
         
         // Loop through the main ArrayList and display all verified records
         for (EcoRecord record : manager.getAllRecords()) {
-            // Polymorphism
             txtDisplay.append(record.displayDetails() + "\n"); 
         }
         
@@ -266,7 +268,7 @@ public class MainGUI extends javax.swing.JFrame {
         //  pop up asking for the ID
         String idToDelete = javax.swing.JOptionPane.showInputDialog(this, "Enter the Record ID to delete (e.g. REC-001 (it's case sensitive)):");
         
-        // Check if clicked Cancel or left it blank
+        // Check if clicked Cancel or left blank
         if (idToDelete == null || idToDelete.trim().isEmpty()) {
             return; // Just cancel the action
         }
@@ -301,7 +303,7 @@ public class MainGUI extends javax.swing.JFrame {
                 javax.swing.JOptionPane.YES_NO_OPTION, 
                 javax.swing.JOptionPane.QUESTION_MESSAGE);
         
-        // If they click Yes, actually dequeue it and approve it
+        // If click Yes, dequeue and approve it
         if (choice == javax.swing.JOptionPane.YES_OPTION) {
             manager.approveNextPending(); // This officially moves it out of the queue
             refreshDisplay();
@@ -311,10 +313,10 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void btnUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUndoActionPerformed
         // TODO add your handling code here:
-        // Tell the manager to pop the last deleted record
+        // pop the last deleted record
         EcoRecord restored = manager.undoLastDeletion();
         
-        // Check if there was actually anything in the stack
+        // Check if there was anything in the stack
         if (restored != null) {
             javax.swing.JOptionPane.showMessageDialog(this, "Undo successful! Record " + restored.getRecordId() + " has been restored to the main registry.");
             refreshDisplay();
@@ -325,6 +327,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // TODO add your handling code here:
+        // safely close the app
         System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
 

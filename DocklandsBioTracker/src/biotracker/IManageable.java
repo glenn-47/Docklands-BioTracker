@@ -7,8 +7,10 @@ package biotracker;
 import java.util.List;
 
 /**
- *
+ * Interface: IManageable
  * @author glenn
+ * Description: Defines the core CRUD (Create, Read, Update, Delete) operations 
+ * required for managing biological records within the application.
  */
 public interface IManageable {
     

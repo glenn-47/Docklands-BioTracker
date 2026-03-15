@@ -5,8 +5,10 @@
 package biotracker;
 
 /**
- *
+ * Interface: ITrackable
  * @author glenn
+ * Description: A secondary interface implemented to ensure all tracked objects 
+ * have standard spatial and temporal data (location and date).
  */
 public interface ITrackable {
     

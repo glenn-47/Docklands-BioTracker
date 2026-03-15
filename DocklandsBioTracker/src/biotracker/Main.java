@@ -5,8 +5,11 @@
 package biotracker;
 
 /**
- *
+ * Class: Main
  * @author glenn
+ * Description: The main entry point of the program. Goes through a series of 
+ * console testing of the Queue, Stack, and SinglyLinkedList ADTs to clearly 
+ * demonstrate functionality before automatically launching the MainGUI.
  */
 public class Main {
     

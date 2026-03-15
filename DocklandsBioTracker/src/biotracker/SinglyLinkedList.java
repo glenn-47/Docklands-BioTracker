@@ -8,43 +8,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Class: SinglyLinkedList
  * @author glenn
+ * Description: A custom Singly Linked List ADT used to store approved 
+ * EcoRecords.
  */
 public class SinglyLinkedList {
     
     // The Node class (Inner class)
+    // Acts as the fundamental building block of the linked list
     private class Node {
         EcoRecord data;
         Node next;
         
         Node(EcoRecord data) {
             this.data = data;
-            this.next = null;
+            this.next = null; // New nodes always point to null initially
         }
     }
     
-    private Node head;
-    private int size;
+    private Node head; // The starting point of the linked list
+    private int size; // Tracks the total number of records for quick lookup
 
     public SinglyLinkedList() {
         this.head = null;
         this.size = 0;
     }
 
-    // Add to the end of the list
+    // Add a new record to the end (tail) of the list
     public void add(EcoRecord record) {
         Node newNode = new Node(record);
+        
+        // list empty
         if (head == null) {
             head = newNode;
-        } else {
+        } 
+        // list has items
+        else {
             Node current = head;
+            // traverse to last node
             while (current.next != null) {
                 current = current.next;
             }
             current.next = newNode;
         }
-        size++;
+        size++; // Increment the tracker
     }
 
     // Remove by ID and return the removed record (for the Undo Stack)

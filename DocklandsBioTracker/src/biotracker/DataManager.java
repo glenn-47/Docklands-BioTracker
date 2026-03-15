@@ -10,8 +10,11 @@ import java.util.Queue;
 import java.util.Stack;
 
 /**
- *
+ * Class: DataManager
  * @author glenn
+ * Description: The backend of the application. Implements IManageable 
+ * and controls data flow using 3 ADTs: a Queue (for pending records), 
+ * a Stack (for undoing deletions), and a custom SinglyLinkedList (main registry).
  */
 public class DataManager implements IManageable {
     
@@ -33,16 +36,16 @@ public class DataManager implements IManageable {
     }
 
     // --- INTERFACE METHODS ---
-
+    
+    // Add
     @Override
     public void addRecord(EcoRecord record) {
         // New records go to the queue first
         pendingQueue.add(record);
     }
-    
+    // Delete
     @Override
     public boolean deleteRecord(String id) {
-        // Look how much cleaner this is with our custom list!
         EcoRecord deletedRecord = mainRegistry.remove(id);
         
         if (deletedRecord != null) {
@@ -62,16 +65,18 @@ public class DataManager implements IManageable {
         return pendingQueue.peek(); // Returns the record, or null if empty
     }
     
-    // Dequeue the next pending record and add it to the main registry
+    // Approve
+    // dequeue the next pending record and add it to the main registry
     public EcoRecord approveNextPending() {
         if (!pendingQueue.isEmpty()) {
             EcoRecord approvedRecord = pendingQueue.poll(); // Removes from front of Queue
             mainRegistry.add(approvedRecord);
-            return approvedRecord; // Return it so the GUI can say "Approved [ID]"
+            return approvedRecord; // Return it so the GUI can display
         }
         return null; // Nothing to approve
     }
-
+    
+    // Undo
     // Pop the last deleted record off the stack and put it back in the registry
     public EcoRecord undoLastDeletion() {
         if (!undoStack.isEmpty()) {
