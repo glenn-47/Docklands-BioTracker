@@ -25,6 +25,12 @@ public class DataManager implements IManageable {
         mainRegistry = new ArrayList<>();
         pendingQueue = new LinkedList<>(); // LinkedList acts as Queue
         undoStack = new Stack<>();
+        
+        // --- EXISTING RECORDS ---
+        mainRegistry.add(new FloraRecord("REC-001", "Mayor Square", "2025-10-20", "Oak Tree", "Healthy"));
+        mainRegistry.add(new FaunaSighting("REC-002", "Grand Canal Dock", "2025-10-21", "Swan", "Nesting"));
+        mainRegistry.add(new FloraRecord("REC-003", "Spencer Dock", "2025-10-22", "Fern", "Needs Water"));
+        mainRegistry.add(new FaunaSighting("REC-004", "Samuel Beckett Bridge", "2025-10-23", "Seagull", "Scavenging"));
     }
 
     // --- INTERFACE METHODS ---

@@ -21,6 +21,14 @@ public class MainGUI extends javax.swing.JFrame {
     public MainGUI() {
         initComponents();
         
+        // 1. Refresh the display to show the pre-loaded data immediately
+        refreshDisplay(); 
+        
+        // Update the ID counter so it starts AFTER the loaded records!
+        // 4 existing records, so the next ID should be 5.
+        idCounter = manager.getAllRecords().size() + 1;
+        
+        // Set the grey text box to show the correct next ID (REC-005)
         txtId.setText(String.format("REC-%03d", idCounter));
     }
     
@@ -64,6 +72,7 @@ public class MainGUI extends javax.swing.JFrame {
         btnSubmitQueue = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDisplay = new javax.swing.JTextArea();
+        btnExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,6 +94,11 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel6.setText("Species / Animal:");
 
         btnUndo.setText("Undo Delete");
+        btnUndo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUndoActionPerformed(evt);
+            }
+        });
 
         btnDelete.setText("Delete Record");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -111,50 +125,63 @@ public class MainGUI extends javax.swing.JFrame {
         txtDisplay.setRows(5);
         jScrollPane1.setViewportView(txtDisplay);
 
+        btnExit.setText("Exit");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(134, 134, 134)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtId)
+                    .addComponent(txtHealthBehaviour)
+                    .addComponent(txtDate)
+                    .addComponent(txtSpeciesAnimal)
+                    .addComponent(txtLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbRecordType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnExit)
+                .addGap(25, 25, 25))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(134, 134, 134)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtId)
-                            .addComponent(txtHealthBehaviour)
-                            .addComponent(txtDate)
-                            .addComponent(txtSpeciesAnimal)
-                            .addComponent(txtLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbRecordType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnUndo)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnDelete)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnApproveNext)))
+                        .addComponent(btnUndo)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDelete)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnApproveNext)
                         .addGap(18, 18, 18)
                         .addComponent(btnSubmitQueue)))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbRecordType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbRecordType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(btnExit)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -182,8 +209,8 @@ public class MainGUI extends javax.swing.JFrame {
                     .addComponent(btnApproveNext)
                     .addComponent(btnSubmitQueue))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
@@ -230,7 +257,7 @@ public class MainGUI extends javax.swing.JFrame {
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
         //  pop up asking for the ID
-        String idToDelete = javax.swing.JOptionPane.showInputDialog(this, "Enter the Record ID to delete (e.g., REC-001):");
+        String idToDelete = javax.swing.JOptionPane.showInputDialog(this, "Enter the Record ID to delete (e.g. REC-001 (it's case sensitive)):");
         
         // Check if clicked Cancel or left it blank
         if (idToDelete == null || idToDelete.trim().isEmpty()) {
@@ -275,6 +302,25 @@ public class MainGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnApproveNextActionPerformed
 
+    private void btnUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUndoActionPerformed
+        // TODO add your handling code here:
+        // Tell the manager to pop the last deleted record
+        EcoRecord restored = manager.undoLastDeletion();
+        
+        // Check if there was actually anything in the stack
+        if (restored != null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Undo successful! Record " + restored.getRecordId() + " has been restored to the main registry.");
+            refreshDisplay();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Nothing to restore.", "Stack Empty", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnUndoActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_btnExitActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -303,6 +349,7 @@ public class MainGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApproveNext;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnExit;
     private javax.swing.JButton btnSubmitQueue;
     private javax.swing.JButton btnUndo;
     private javax.swing.JComboBox<String> cmbRecordType;
