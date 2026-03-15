@@ -36,16 +36,17 @@ public class DataManager implements IManageable {
     }
 
     @Override
-    public void deleteRecord(String id) {
+    public boolean deleteRecord(String id) {
         for (int i = 0; i < mainRegistry.size(); i++) {
             EcoRecord current = mainRegistry.get(i);
             if (current.getRecordId().equals(id)) {
                 // Remove from registry and push onto the undo stack
                 EcoRecord deletedRecord = mainRegistry.remove(i);
                 undoStack.push(deletedRecord);
-                return; // Exit once found and deleted
+                return true; // successfully found and deleted
             }
         }
+        return false; // id not found (loop finished)
     }
 
     @Override

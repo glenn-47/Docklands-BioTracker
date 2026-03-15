@@ -11,6 +11,7 @@ package biotracker;
 public class MainGUI extends javax.swing.JFrame {
     
     private DataManager manager = new DataManager();
+    private int idCounter = 1; // This will keep track of IDs
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainGUI.class.getName());
 
@@ -19,6 +20,8 @@ public class MainGUI extends javax.swing.JFrame {
      */
     public MainGUI() {
         initComponents();
+        
+        txtId.setText(String.format("REC-%03d", idCounter));
     }
     
     private void refreshDisplay() {
@@ -66,6 +69,9 @@ public class MainGUI extends javax.swing.JFrame {
 
         jLabel1.setText("Record ID:");
 
+        txtId.setEditable(false);
+        txtId.setBackground(new java.awt.Color(204, 204, 204));
+
         jLabel2.setText("Location:");
 
         jLabel3.setText("Date (YYYY-MM-DD):");
@@ -81,6 +87,11 @@ public class MainGUI extends javax.swing.JFrame {
         btnUndo.setText("Undo Delete");
 
         btnDelete.setText("Delete Record");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnApproveNext.setText("Appprove Next");
 
@@ -195,18 +206,43 @@ public class MainGUI extends javax.swing.JFrame {
         
         // Add to the Queue via the DataManager
         manager.addRecord(newRecord);
+        refreshDisplay();
+        
+        // Increase the counter and update the grey box for the next record
+        idCounter++;
+        txtId.setText(String.format("REC-%03d", idCounter));
         
         // Clear the text fields for the next entry
-        txtId.setText("");
         txtLocation.setText("");
         txtDate.setText("");
         txtSpeciesAnimal.setText("");
         txtHealthBehaviour.setText("");
         
-        // Update the Display and show a popup message
-        refreshDisplay();
+        // show a popup message
         javax.swing.JOptionPane.showMessageDialog(this, "Successfully added to the Pending Queue!");
     }//GEN-LAST:event_btnSubmitQueueActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        //  pop up asking for the ID
+        String idToDelete = javax.swing.JOptionPane.showInputDialog(this, "Enter the Record ID to delete (e.g., REC-001):");
+        
+        // Check if they clicked Cancel or left it blank
+        if (idToDelete == null || idToDelete.trim().isEmpty()) {
+            return; // Just cancel the action
+        }
+        
+        // delete it and store the result (true/false)
+        boolean success = manager.deleteRecord(idToDelete.trim());
+        
+        // Show the correct pop-up based on the result
+        if (success) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Success! Record " + idToDelete + " has been deleted and sent to the Undo Stack.");
+            refreshDisplay(); // Only refresh if something actually changed
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: Record '" + idToDelete + "' does not exist in the main registry.", "Not Found", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments

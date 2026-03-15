@@ -13,7 +13,7 @@ import java.util.List;
 public interface IManageable {
     
     void addRecord(EcoRecord record);
-    void deleteRecord(String id);
+    boolean deleteRecord(String id);
     List<EcoRecord> getAllRecords();
     
 }
