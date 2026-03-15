@@ -38,11 +38,11 @@
                       <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="txtId" max="32767" attributes="0"/>
-                          <Component id="cmbRecordType" max="32767" attributes="0"/>
                           <Component id="txtHealthBehaviour" max="32767" attributes="0"/>
                           <Component id="txtDate" max="32767" attributes="0"/>
                           <Component id="txtSpeciesAnimal" max="32767" attributes="0"/>
                           <Component id="txtLocation" alignment="0" min="-2" pref="147" max="-2" attributes="0"/>
+                          <Component id="cmbRecordType" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
