@@ -10,6 +10,8 @@ package biotracker;
  */
 public class MainGUI extends javax.swing.JFrame {
     
+    private DataManager manager = new DataManager();
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainGUI.class.getName());
 
     /**
@@ -17,6 +19,19 @@ public class MainGUI extends javax.swing.JFrame {
      */
     public MainGUI() {
         initComponents();
+    }
+    
+    private void refreshDisplay() {
+        txtDisplay.setText(""); // Clear the text area first
+        
+        // Loop through the main ArrayList and display all verified records
+        for (EcoRecord record : manager.getAllRecords()) {
+            // Polymorphism in action! It calls the right displayDetails() automatically
+            txtDisplay.append(record.displayDetails() + "\n"); 
+        }
+        
+        // Show how many are waiting in the Queue
+        txtDisplay.append("\n--- Pending in Queue: " + manager.getPendingCount() + " ---");
     }
 
     /**
@@ -70,6 +85,11 @@ public class MainGUI extends javax.swing.JFrame {
         btnApproveNext.setText("Appprove Next");
 
         btnSubmitQueue.setText("Submit to Queue");
+        btnSubmitQueue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmitQueueActionPerformed(evt);
+            }
+        });
 
         txtDisplay.setColumns(20);
         txtDisplay.setRows(5);
@@ -152,6 +172,41 @@ public class MainGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSubmitQueueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitQueueActionPerformed
+        // TODO add your handling code here:
+        // Gather text from the text fields
+        String id = txtId.getText();
+        String loc = txtLocation.getText();
+        String date = txtDate.getText();
+        String typeOrSpecies = txtSpeciesAnimal.getText();
+        String healthOrBehaviour = txtHealthBehaviour.getText();
+        
+        // Check the Dropdown to see if it's Flora or Fauna
+        String recordType = cmbRecordType.getSelectedItem().toString();
+        
+        EcoRecord newRecord;
+        
+        if (recordType.equals("Flora")) {
+            newRecord = new FloraRecord(id, loc, date, typeOrSpecies, healthOrBehaviour);
+        } else {
+            newRecord = new FaunaSighting(id, loc, date, typeOrSpecies, healthOrBehaviour);
+        }
+        
+        // Add to the Queue via the DataManager
+        manager.addRecord(newRecord);
+        
+        // Clear the text fields for the next entry
+        txtId.setText("");
+        txtLocation.setText("");
+        txtDate.setText("");
+        txtSpeciesAnimal.setText("");
+        txtHealthBehaviour.setText("");
+        
+        // Update the Display and show a popup message
+        refreshDisplay();
+        javax.swing.JOptionPane.showMessageDialog(this, "Successfully added to the Pending Queue!");
+    }//GEN-LAST:event_btnSubmitQueueActionPerformed
 
     /**
      * @param args the command line arguments
