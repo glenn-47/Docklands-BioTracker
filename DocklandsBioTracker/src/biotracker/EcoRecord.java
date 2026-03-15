@@ -31,10 +31,12 @@ public abstract class EcoRecord implements ITrackable {
         return recordId;
     }
 
+    @Override
     public String getLocation() {
         return location;
     }
 
+    @Override
     public String getDateReported() {
         return dateReported;
     }
