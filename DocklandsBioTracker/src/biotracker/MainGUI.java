@@ -10,7 +10,7 @@ package biotracker;
  */
 public class MainGUI extends javax.swing.JFrame {
     
-    private DataManager manager = new DataManager();
+    private final DataManager manager = new DataManager();
     private int idCounter = 1; // This will keep track of IDs
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainGUI.class.getName());
@@ -228,6 +228,13 @@ public class MainGUI extends javax.swing.JFrame {
         // Check the Dropdown to see if it's Flora or Fauna
         String recordType = cmbRecordType.getSelectedItem().toString();
         
+        // empty field validation
+        if (loc.isEmpty() || date.isEmpty() || typeOrSpecies.isEmpty() || healthOrBehaviour.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please fill out all fields before submitting.", "Missing Information", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return; // Stops the rest of the code from running
+        }
+        
+        // creates new
         EcoRecord newRecord;
         
         if (recordType.equals("Flora")) {

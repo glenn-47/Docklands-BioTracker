@@ -4,7 +4,6 @@
  */
 package biotracker;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -17,12 +16,12 @@ import java.util.Stack;
 public class DataManager implements IManageable {
     
      // ADTs
-    private ArrayList<EcoRecord> mainRegistry; // Verified records
-    private Queue<EcoRecord> pendingQueue;     // Waiting to be verified
-    private Stack<EcoRecord> undoStack;        // Deleted records (LIFO)
+    private final SinglyLinkedList mainRegistry; // Verified records
+    private final Queue<EcoRecord> pendingQueue;     // Waiting to be verified
+    private final Stack<EcoRecord> undoStack;        // Deleted records (LIFO)
     
     public DataManager() {
-        mainRegistry = new ArrayList<>();
+        mainRegistry = new SinglyLinkedList();
         pendingQueue = new LinkedList<>(); // LinkedList acts as Queue
         undoStack = new Stack<>();
         
@@ -40,24 +39,22 @@ public class DataManager implements IManageable {
         // New records go to the queue first
         pendingQueue.add(record);
     }
-
+    
     @Override
     public boolean deleteRecord(String id) {
-        for (int i = 0; i < mainRegistry.size(); i++) {
-            EcoRecord current = mainRegistry.get(i);
-            if (current.getRecordId().equals(id)) {
-                // Remove from registry and push onto the undo stack
-                EcoRecord deletedRecord = mainRegistry.remove(i);
-                undoStack.push(deletedRecord);
-                return true; // successfully found and deleted
-            }
+        // Look how much cleaner this is with our custom list!
+        EcoRecord deletedRecord = mainRegistry.remove(id);
+        
+        if (deletedRecord != null) {
+            undoStack.push(deletedRecord);
+            return true;
         }
-        return false; // id not found (loop finished)
+        return false;
     }
 
     @Override
     public List<EcoRecord> getAllRecords() {
-        return mainRegistry;
+        return mainRegistry.toList(); // Uses helper method so the GUI doesn't break
     }
     
     // Peek at the front of the queue without removing it

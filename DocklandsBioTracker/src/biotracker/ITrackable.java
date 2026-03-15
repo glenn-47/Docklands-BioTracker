@@ -10,4 +10,7 @@ package biotracker;
  */
 public interface ITrackable {
     
+    String getLocation();
+    String getDateReported();
+    
 }

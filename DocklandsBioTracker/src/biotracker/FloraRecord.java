@@ -10,8 +10,8 @@ package biotracker;
  */
 public class FloraRecord extends EcoRecord {
     
-    private String plantSpecies;
-    private String healthStatus;
+    private final String plantSpecies;
+    private final String healthStatus;
 
     public FloraRecord(String recordId, String location, String dateReported, String plantSpecies, String healthStatus) {
         super(recordId, location, dateReported);

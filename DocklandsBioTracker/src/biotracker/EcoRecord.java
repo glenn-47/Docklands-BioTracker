@@ -8,7 +8,7 @@ package biotracker;
  *
  * @author glenn
  */
-public abstract class EcoRecord {
+public abstract class EcoRecord implements ITrackable {
     
     protected String recordId;
     protected String location;

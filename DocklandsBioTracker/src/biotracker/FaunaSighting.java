@@ -10,8 +10,8 @@ package biotracker;
  */
 public class FaunaSighting extends EcoRecord {
     
-    private String animalType;
-    private String behaviourObserved; // Updated spelling!
+    private final String animalType;
+    private final String behaviourObserved; // Updated spelling!
 
     public FaunaSighting(String recordId, String location, String dateReported, String animalType, String behaviourObserved) {
         super(recordId, location, dateReported);
