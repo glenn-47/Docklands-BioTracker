@@ -21,7 +21,7 @@ public class MainGUI extends javax.swing.JFrame {
     public MainGUI() {
         initComponents();
         
-        // 1. Refresh the display to show the pre-loaded data immediately
+        // Refresh the display to show the pre-loaded data immediately
         refreshDisplay(); 
         
         // Update the ID counter so it starts AFTER the loaded records!
@@ -37,7 +37,7 @@ public class MainGUI extends javax.swing.JFrame {
         
         // Loop through the main ArrayList and display all verified records
         for (EcoRecord record : manager.getAllRecords()) {
-            // Polymorphism in action! It calls the right displayDetails() automatically
+            // Polymorphism
             txtDisplay.append(record.displayDetails() + "\n"); 
         }
         
