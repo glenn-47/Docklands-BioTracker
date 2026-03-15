@@ -94,6 +94,11 @@ public class MainGUI extends javax.swing.JFrame {
         });
 
         btnApproveNext.setText("Appprove Next");
+        btnApproveNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnApproveNextActionPerformed(evt);
+            }
+        });
 
         btnSubmitQueue.setText("Submit to Queue");
         btnSubmitQueue.addActionListener(new java.awt.event.ActionListener() {
@@ -227,7 +232,7 @@ public class MainGUI extends javax.swing.JFrame {
         //  pop up asking for the ID
         String idToDelete = javax.swing.JOptionPane.showInputDialog(this, "Enter the Record ID to delete (e.g., REC-001):");
         
-        // Check if they clicked Cancel or left it blank
+        // Check if clicked Cancel or left it blank
         if (idToDelete == null || idToDelete.trim().isEmpty()) {
             return; // Just cancel the action
         }
@@ -235,14 +240,40 @@ public class MainGUI extends javax.swing.JFrame {
         // delete it and store the result (true/false)
         boolean success = manager.deleteRecord(idToDelete.trim());
         
-        // Show the correct pop-up based on the result
+        // Show the correct pop up based on the result
         if (success) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Success! Record " + idToDelete + " has been deleted and sent to the Undo Stack.");
+            javax.swing.JOptionPane.showMessageDialog(this, "Success! Record " + idToDelete + " has been deleted.");
             refreshDisplay(); // Only refresh if something actually changed
         } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error: Record '" + idToDelete + "' does not exist in the main registry.", "Not Found", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: Record '" + idToDelete + "' does not exist.", "Not Found", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnApproveNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApproveNextActionPerformed
+        // TODO add your handling code here:
+        // Peek at the next record in line
+        EcoRecord nextRecord = manager.peekNextPending();
+        
+        // Check if the queue is empty
+        if (nextRecord == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "The pending queue is empty. No records to approve.", "Queue Empty", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            return; // Stop running the code
+        }
+        
+        // Show a confirmation pop up with the record details
+        int choice = javax.swing.JOptionPane.showConfirmDialog(this, 
+                "Do you want to approve the following record?\n\n" + nextRecord.displayDetails(), 
+                "Review Pending Record", 
+                javax.swing.JOptionPane.YES_NO_OPTION, 
+                javax.swing.JOptionPane.QUESTION_MESSAGE);
+        
+        // If they click Yes, actually dequeue it and approve it
+        if (choice == javax.swing.JOptionPane.YES_OPTION) {
+            manager.approveNextPending(); // This officially moves it out of the queue
+            refreshDisplay();
+            javax.swing.JOptionPane.showMessageDialog(this, "Success! Record " + nextRecord.getRecordId() + " has been added to the main registry.");
+        }
+    }//GEN-LAST:event_btnApproveNextActionPerformed
 
     /**
      * @param args the command line arguments

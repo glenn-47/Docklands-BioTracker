@@ -53,7 +53,12 @@ public class DataManager implements IManageable {
     public List<EcoRecord> getAllRecords() {
         return mainRegistry;
     }
-
+    
+    // Peek at the front of the queue without removing it
+    public EcoRecord peekNextPending() {
+        return pendingQueue.peek(); // Returns the record, or null if empty
+    }
+    
     // Dequeue the next pending record and add it to the main registry
     public EcoRecord approveNextPending() {
         if (!pendingQueue.isEmpty()) {
